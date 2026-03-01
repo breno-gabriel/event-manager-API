@@ -42,6 +42,12 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :description, :date, :location, :status)
+    params.require(:event).permit(
+    :name, :description, :date, :location, :status,
+    checkin_rules_attributes: [
+        :id, :name, :is_mandatory, :is_active, 
+        :start_minutes, :end_minutes, :_destroy
+    ]
+    )
   end
 end

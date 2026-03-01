@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_28_173343) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_28_213741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "checkin_rules", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "end_minutes"
+    t.bigint "event_id", null: false
+    t.boolean "is_active", default: true
+    t.boolean "is_mandatory", default: false
+    t.string "name"
+    t.integer "start_minutes"
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_checkin_rules_on_event_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -42,5 +54,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_28_173343) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "checkin_rules", "events"
   add_foreign_key "participants", "events"
 end
