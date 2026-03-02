@@ -1,5 +1,6 @@
 class Event < ApplicationRecord
 
+  has_many :participants, dependent: :destroy
   has_many :checkin_rules, dependent: :destroy
   
   accepts_nested_attributes_for :checkin_rules, allow_destroy: true
