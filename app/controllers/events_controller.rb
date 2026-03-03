@@ -3,7 +3,21 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.all
-    render json: @events
+    @events = @events.where("name ILIKE ?", "%#{params[:name]}%") if params[:name].present?
+    @events = @events.where(status: params[:status]) if params[:status].present?
+    @events = @events.where("location ILIKE ?", "%#{params[:location]}%") if params[:location].present?
+    @events = @events.where("date >= ?", params[:date_from]) if params[:date_from].present?
+    @events = @events.where("date <= ?", params[:date_to]) if params[:date_to].present?
+    @events = @events.page(params[:page]).per(params[:per_page])
+    render json: {
+      events: ActiveModelSerializers::SerializableResource.new(@events),
+      meta: {
+        current_page: @events.current_page,
+        total_pages: @events.total_pages,
+        total_count: @events.total_count,
+        per_page: @events.limit_value
+      }
+    }
   end
 
   def show
