@@ -8,6 +8,8 @@ class EventsController < ApplicationController
     @events = @events.where("location ILIKE ?", "%#{params[:location]}%") if params[:location].present?
     @events = @events.where("date >= ?", params[:date_from]) if params[:date_from].present?
     @events = @events.where("date <= ?", params[:date_to]) if params[:date_to].present?
+    order_direction = %w[asc desc].include?(params[:order]&.downcase) ? params[:order].downcase : "asc"
+    @events = @events.order(date: order_direction)
     @events = @events.page(params[:page]).per(params[:per_page])
     render json: {
       events: ActiveModelSerializers::SerializableResource.new(@events),

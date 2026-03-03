@@ -5,7 +5,7 @@ class ParticipantsController < ApplicationController
     @participants = Participant.all
 
     if params[:name].present?
-      @participants = @participants.where("name LIKE ?", "%#{params[:name]}%")
+      @participants = @participants.where("name ILIKE ?", "%#{params[:name]}%")
     end
 
     if params[:event_id].present?
@@ -16,7 +16,16 @@ class ParticipantsController < ApplicationController
       @participants = @participants.where(check_in_status: params[:check_in_status])
     end
 
-    render json: @participants.as_json(include: :event)
+    @participants = @participants.page(params[:page]).per(params[:per_page])
+    render json: {
+      participants: @participants.as_json(include: :event),
+      meta: {
+        current_page: @participants.current_page,
+        total_pages: @participants.total_pages,
+        total_count: @participants.total_count,
+        per_page: @participants.limit_value
+      }
+    }
   end
 
   def show
