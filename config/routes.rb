@@ -11,10 +11,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :events do
-    
-    member do
-      get :checkin_rules, to: 'events#checkin_rules'
-    end
+    resources :checkin_rules
   end
 
   resources :participants
