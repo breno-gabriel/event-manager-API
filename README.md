@@ -65,14 +65,13 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    > - 44 participantes
 
    > **Nota:** A API estará acessível em `http://localhost:3000`.
-   
-5. Usuario de teste: 
+
+5. Usuario de teste:
    ```bash
         name: "Admin",
         email: "admin@eventmanager.com",
         password: "password123"
    ```
-    
 6. **Encerrando a Aplicação**
 
    Para parar e remover os containers, execute:
@@ -80,11 +79,37 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    ```bash
    docker compose down
    ```
+
 7. **Executando o frontend**
-   
+
    ```bash
       git clone https://github.com/breno-gabriel/event-manager-frontend.git
    ```
+
+## Solução de Problemas
+
+### Erro de conexão com o banco de dados
+
+Se ao executar `rails db:prepare` você receber o erro:
+
+```
+ActiveRecord::DatabaseConnectionError: There is an issue connecting to your database
+with your username/password, username: postgres.
+Caused by: PG::ConnectionBad: password authentication failed for user "postgres"
+```
+
+Isso ocorre porque o diretório `./tmp/db` contém dados de uma inicialização anterior do PostgreSQL. Quando o Postgres encontra um data directory já existente, ele **ignora** as variáveis de ambiente (`POSTGRES_USER` / `POSTGRES_PASSWORD`), mantendo as credenciais antigas.
+
+**Para resolver**, pare os containers, remova o diretório de dados e suba novamente:
+
+```bash
+docker compose down
+rm -rf tmp/db            # Linux/Mac
+# ou no Windows PowerShell:
+# Remove-Item -Recurse -Force tmp\db
+docker compose up -d --build
+docker compose exec web rails db:prepare
+```
 
 ## Lógica de Janela de Validação (Check-in Rules)
 
