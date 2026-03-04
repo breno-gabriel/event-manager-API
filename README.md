@@ -63,15 +63,22 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    >
 
    > **Nota:** A API estará acessível em `http://localhost:3000`.
-   >
-5. **Encerrando a Aplicação**
+   
+5. Usuario de teste: 
+   ```bash
+        name: "Admin",
+        email: "admin@eventmanager.com",
+        password: "password123"
+   ```
+    
+6. **Encerrando a Aplicação**
 
    Para parar e remover os containers, execute:
 
    ```bash
    docker compose down
    ```
-6. **Executando o frontend**
+7. **Executando o frontend**
    
    ```bash
       git clone https://github.com/breno-gabriel/event-manager-frontend.git
