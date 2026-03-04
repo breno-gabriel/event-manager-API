@@ -46,7 +46,7 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    Com os containers em execução, configure o banco de dados (criação e migrações):
 
    ```bash
-   docker compose exec app rails db:prepare
+   docker compose exec web rails db:prepare
    ```
 
 4. **Popular o Banco de Dados (Seeds)**
@@ -54,7 +54,7 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    Para carregar os dados iniciais (usuários, eventos, regras de check-in e participantes):
 
    ```bash
-   docker compose exec app rails db:seed
+   docker compose exec web rails db:seed
    ```
 
    > **Dados criados pelo seed:**
@@ -65,17 +65,23 @@ Para simplificar o desenvolvimento e a execução, o projeto utiliza **Docker**.
    > - 44 participantes
 
    > **Nota:** A API estará acessível em `http://localhost:3000`.
-
-5. **Encerrando a Aplicação**
+   
+5. Usuario de teste: 
+   ```bash
+        name: "Admin",
+        email: "admin@eventmanager.com",
+        password: "password123"
+   ```
+    
+6. **Encerrando a Aplicação**
 
    Para parar e remover os containers, execute:
 
    ```bash
    docker compose down
    ```
-
-6. **Executando o frontend**
-
+7. **Executando o frontend**
+   
    ```bash
       git clone https://github.com/breno-gabriel/event-manager-frontend.git
    ```
